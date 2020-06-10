@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>digit classification</title>
+
+        <style>
+            #content{
+                width: 300px;
+                height: 300px;
+                margin: auto;
+                border: 1px solid black;
+                background-color: black;
+            }
+        </style>
+
+    </head>
+    <body>
+        
+        <div id="content">
+            <canvas id="myCanvas"></canvas>
+
+            <br/><br/>
+            <form action="http://127.0.0.1:5000/predict" method="POST">
+                <input type="hidden" id="url" name="url"/>
+                <input type="submit" onclick="predict()" />
+            </form>
+
+            {{result}}
+            <br/><br/>
+        </div>
+
+
+
+        <script>
+            var canvas = document.getElementById("myCanvas");
+            var painting = document.getElementById("content");
+            var ctx = canvas.getContext('2d');
+           
+            var paintStyle = getComputedStyle(painting);
+            
+            canvas.width = parseInt(paintStyle.getPropertyValue("width"));
+            canvas.height = parseInt(paintStyle.getPropertyValue("height"));
+
+            var mouse = {x:0, y:0};
+
+            canvas.addEventListener('mousemove', function(e){
+                mouse.x = e.pageX - this.offsetLeft;
+                mouse.y = e.pageY - this.offsetTop;
+            }, false);
+
+
+            ctx.lineWidth = 15;
+            ctx.lineJoin = 'round';
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = '#FFFF';
+
+            canvas.addEventListener('mousedown', function(e){
+                ctx.beginPath();
+                ctx.moveTo(mouse.x, mouse.y);
+                canvas.addEventListener('mousemove', onPaint, false);
+            }, false);
+
+            canvas.addEventListener('mouseup', function(){
+                canvas.removeEventListener('mousemove', onPaint, false);
+            }, false);
+
+            var onPaint = function(){
+                ctx.lineTo(mouse.x, mouse.y);
+                ctx.stroke();
+            };
+
+            console.log('hello');
+
+            var refresh = function(){
+                ctx.beginPath();
+                console.log('hiiii');
+            };
+
+            var predict = function(){
+                // var image = new Image();
+                // var url = document.getElementById('url');
+                // image.id = "pic";
+                // image.src = canvas.toDataURL();
+                // url.value = image.src;
+                // imgConverted.Image = image.src
+
+                // url.value = 
+
+                uri = document.getElementById('url');
+                uri.value = canvas.toDataURL('image/jpg');
+
+            };
+
+        </script>
+    </body>
+
+</html>
